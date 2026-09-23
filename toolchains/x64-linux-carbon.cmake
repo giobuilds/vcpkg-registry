@@ -36,5 +36,5 @@ if (NOT _CCP_TOOLCHAIN_FILE_LOADED)
     add_compile_options(-g)
 
     # Enable fast, lossy math optimization while disabling optimizations for NaN/+-inf floating points
-    set(MATH_OPTIMIZE_FLAG -ffast-math -fno-finite-math-only)
+    set(MATH_OPTIMIZE_FLAG -ffast-math -fno-finite-math-only -fsigned-zeros)
 endif ()
