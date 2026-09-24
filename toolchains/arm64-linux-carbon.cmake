@@ -32,6 +32,24 @@ if (NOT _CCP_TOOLCHAIN_FILE_LOADED)
     #    add_compile_options(-Wpedantic)
     #    add_compile_options(-Wextra)
 
+    # Same exclusions as the macOS toolchains:
+    # We're using a lot of MSVC specific pragmas in our codebase, so we silence those warnings until we got around to
+    # cleaning them up
+    add_compile_options(-Wno-unknown-pragmas)
+    # There's a surprising amount of unused functions, we need to investigate this deeper at one point
+    add_compile_options(-Wno-unused-function)
+    # Ditto, much like the functions there are also a lot of unused variables it appears
+    add_compile_options(-Wno-unused-variable)
+    # We've not been very good at keeping order
+    add_compile_options(-Wno-reorder)
+    # -Wmissing-braces should only be used by C / ObjectiveC, but for some reason it shows up for our C++ code, too.
+    add_compile_options(-Wno-missing-braces)
+
+    # GCC's -Wall enables these where Clang's -Wall (the macOS baseline) does not, so projects that build clean with
+    # warnings as errors on macOS would fail here: signed/unsigned comparisons in C++, memset/memcpy on non-trivial
+    # classes, C-style casts that bypass a converting constructor, and set-but-unused locals.
+    add_compile_options(-Wno-sign-compare -Wno-class-memaccess -Wno-cast-user-defined -Wno-unused-but-set-variable)
+
     # Manually add debug symbols to builds
     add_compile_options(-g)
 
